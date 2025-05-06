@@ -29,20 +29,34 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Email is already registered.');
         }
     
-        // Generate API key (if needed)
+        // Generate API key
         $apiKey = bin2hex(random_bytes(32));
     
-        // Save user with API key
+        // Save user
         $model->save([
             'username' => $username,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            'api_key' => $apiKey  // Save the generated API key
+            'api_key' => $apiKey,
+            'first_login' => true
         ]);
     
-        return view('api_key', ['apiKey' => $apiKey]);
-
+        // Fetch the saved user
+        $user = $model->where('email', $email)->first();
+    
+        // Automatically log the user in
+        session()->set([
+            'user_id' => $user['id'],
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'first_login' => $user['first_login'],
+            'api_key' => $user['api_key']
+        ]);
+    
+        // Redirect to home
+        return redirect()->to('/');
     }
+    
     
 
 
@@ -70,12 +84,31 @@ class Auth extends BaseController
             'user_id' => $user['id'],
             'username' => $user['username'],
             'email' => $user['email'],
+            'first_login' => $user['first_login'],
+            'api_key' => $user['api_key'] // Include API key in session
         ]);
-        return redirect()->to('/blog');
+        
+        return redirect()->to('/');
     }
 
     // If authentication fails, redirect back with error
     return redirect()->back()->with('error', 'Invalid credentials.');
+}
+public function markFirstLoginDone()
+{
+    if ($this->request->isAJAX()) {
+        log_message('debug', 'AJAX request received to mark first login as done.');
+
+        $userId = session()->get('user_id');
+        $model = new UserModel();
+        $model->update($userId, ['first_login' => false]);
+
+        session()->set('first_login', false);
+
+        return $this->response->setJSON(['status' => 'success']);
+    }
+
+    return $this->response->setStatusCode(403)->setJSON(['status' => 'forbidden']);
 }
 
 

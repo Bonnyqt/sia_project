@@ -84,7 +84,7 @@ body {
 
 .featured-post .featured-img {
   width: 100%;
-  max-width: 500px;
+  max-width: 550px;
   border-radius: 12px;
   object-fit: cover;
   flex: 1 1 50%;
@@ -146,7 +146,7 @@ h2, h5 {
 }
 
 .blog-container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 12px;
 }
@@ -224,19 +224,19 @@ p {
   background-color: #0056b3;
 }
 
-/* Modal Styles */
+
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Position fixed to the viewport */
+  display: none;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 10000;
   opacity: 0;
   animation: fadeIn 0.4s forwards;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
 }
 
 /* Modal Content */
@@ -244,18 +244,18 @@ p {
   background-color: white;
   padding: 30px;
   width: 50%;
-  max-width: 600px; /* Ensures the modal doesn't get too large */
+  max-width: 600px;
   margin: 0 auto;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: scaleIn 0.5s ease-out;
-  position: absolute; /* Make sure the modal is centered */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust for exact center */
+  animation: scaleIn 0.5s ease-out forwards;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1); /* Final state */
 }
 
-/* Animation for modal background fade-in */
+/* Background fade-in */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -265,17 +265,18 @@ p {
   }
 }
 
-/* Animation for modal content scale-in */
+/* Content scale-in while centered */
 @keyframes scaleIn {
   from {
-    transform: scale(0.7);
+    transform: translate(-50%, -50%) scale(0.7); /* Centered and small */
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1); /* Centered and full size */
     opacity: 1;
   }
 }
+
 
 /* Close Button Styles */
 .close-btn {
@@ -359,6 +360,42 @@ button[type="submit"]:hover {
 <body>
   
 <?= view('partials/header') ?>
+<?php if (session()->get('first_login')): ?>
+    <!-- Modal HTML -->
+    <div id="firstLoginModal" style="display:block;position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.5);">
+        <div class="modal-content" style="background:#fff; padding:20px; width:300px; border-radius:8px; text-align:center;">
+            <h2 style="color:black;">Welcome!</h2>
+            <p>This is your API key:</p>
+            <code style="display:block; background:#f0f0f0; padding:10px; word-break:break-all;">
+                <?= esc(session()->get('api_key')) ?>
+            </code>
+            <button id="closeModal" style="margin-top:15px; padding:10px 20px;">Close</button>
+        </div>
+    </div>
+    <script>
+document.getElementById('closeModal').addEventListener('click', function () {
+    document.getElementById('firstLoginModal').style.display = 'none';
+
+    fetch('/auth/markFirstLoginDone', {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin' // Important to include session cookies
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Server response:', data);
+    })
+    .catch(error => {
+        console.error('AJAX error:', error);
+    });
+});
+</script>
+
+   
+<?php endif; ?>
 
 <button id="stickyBtn" class="btn btn-primary">Open Modal</button>
 
@@ -394,36 +431,35 @@ button[type="submit"]:hover {
 
 <br><br>
 
+<?php if (session()->get('api_key')): ?>
 <div class="blog-container">
   <?php if (!empty($posts)): ?>
     
     <!-- Featured Post -->
-    <div class="featured-post mb-4" style="display:">
-  <img src="https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=" alt="Featured Image" class="featured-img">
-  
-  <div class="content">
-    <div class="meta"><?= esc($posts[0]['category'] ?? 'Category') ?> • <?= esc($posts[0]['created_at']) ?></div>
-    <h2><?= esc($posts[0]['title']) ?></h2>
-    <p><?= esc($posts[0]['content']) ?></p>
-    <div class="author">
-      <img src="https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=" alt="">
-      <span><?= esc($posts[0]['author'] ?? 'Author') ?></span>
+    <div class="featured-post mb-4">
+      <img src="/uploads/sss.jfif" alt="Featured Image" class="featured-img">
+      <div class="content">
+        <div class="meta"><?= esc($posts[0]['category'] ?? 'Category') ?> • <?= esc($posts[0]['created_at']) ?></div>
+        <h2><?= esc($posts[0]['title']) ?></h2>
+        <p><?= esc($posts[0]['content']) ?></p>
+        <div class="author">
+          <img src="/uploads/sss.jfif" alt="">
+          <span><?= esc($posts[0]['author'] ?? 'Author') ?></span>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
 
     <!-- All Other Posts -->
     <div class="sub-posts-grid">
       <?php foreach (array_slice($posts, 1) as $post): ?>
         <div class="sub-post">
-          <img src="https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=" alt="Image">
+          <img src="/uploads/sss.jfif" alt="Image">
           <div class="meta"><?= esc($post['category'] ?? 'Category') ?> • <?= esc($post['created_at']) ?></div>
           <h5><?= esc($post['title']) ?></h5>
           <p><?= esc($post['content']) ?></p>
           <div class="author">
-            <img src="https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=" alt="">
-            <span></span>
+            <img src="/uploads/sss.jfif" alt="">
+            <span><?= esc($post['author'] ?? '') ?></span>
           </div>
         </div>
       <?php endforeach; ?>
@@ -433,6 +469,13 @@ button[type="submit"]:hover {
     <p>No posts yet.</p>
   <?php endif; ?>
 </div>
+<?php else: ?>
+  <div style="text-align:center; padding: 50px;">
+    <h3>Unauthorized Access</h3>
+    <p>You must have a valid API key to view this content.</p>
+  </div>
+<?php endif; ?>
+
 
 
 </body>
@@ -453,7 +496,6 @@ closeBtn.onclick = function() {
     modal.style.display = "none";
 }
 
-// Close the modal if the user clicks anywhere outside of the modal content
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";

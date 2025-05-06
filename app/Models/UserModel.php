@@ -8,7 +8,8 @@ class UserModel extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['username', 'email', 'password', 'api_key'];
+    protected $allowedFields = ['username', 'email', 'password', 'api_key', 'first_login'];
+
     protected $useTimestamps = true;
 
     // You can also add a method to generate API key if needed

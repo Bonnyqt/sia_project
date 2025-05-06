@@ -85,7 +85,7 @@ class Blog extends BaseController
         // Write the updated posts array back to the JSON file
         file_put_contents($this->dataFile, json_encode($posts, JSON_PRETTY_PRINT));
     
-        return redirect()->to('/blog/list'); // Redirect to the list of blog posts
+        return redirect()->to('/'); // Redirect to the list of blog posts
     }
     
 private function checkApiKey($apiKey)

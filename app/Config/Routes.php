@@ -17,4 +17,5 @@ $routes->post('/login', 'Auth::doLogin');
 $routes->get('/logout', 'Auth::logout');
 $routes->get('api/get-data', 'ApiController::getData');
 $routes->post('/api/store-data', 'ApiController::storeData');
+$routes->post('/auth/markFirstLoginDone', 'Auth::markFirstLoginDone');
 
