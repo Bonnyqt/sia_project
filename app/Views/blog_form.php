@@ -122,13 +122,8 @@
             <button type="submit">Save Post</button>
         </form>
 
-        <!-- Link to view all posts -->
-        <a href="/blog/list" class="back-link">📖 View All Posts</a>
-
-        <!-- Logout Link -->
-        <?php if (session()->get('user_id')): ?>
-            <a href="/logout" class="logout-link">Logout</a>
-        <?php endif; ?>
+    
+       
     </div>
 </body>
 
