@@ -1,18 +1,16 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lost & Vocal</title>
-  <link rel="icon" type="image/x-icon" href="/uploads/test.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="icon" type="image/x-icon" href="/uploads/test.png">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <style>
-
-.featured-post {
+   <title>Lost & Vocal</title>
+</head>
+<style>
+   
+   .featured-post {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
@@ -34,11 +32,6 @@
   font-size: 0.8em;
   font-weight: bold;
   z-index: 10; /* Make sure the badge stays on top of content */
-}
-
-/* Ensure other content is spaced correctly in flex layout */
-.featured-post .content {
-  flex-grow: 1; /* Allow content to take up remaining space */
 }
 
 
@@ -133,14 +126,6 @@ h2, h5 {
 }
 
 
-.sub-post p {
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limit to 3 lines */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 4.5em; /* Adjust based on line height (approx. 1.5em per line) */
-}
 
 
 .author img {
@@ -153,36 +138,12 @@ h2, h5 {
     opacity: 1;
   }
   /* Sticky Button */
-  .post-actions {
-  display: flex;
-  gap: 17px;
-  justify-content: flex-start;
-  margin-top: 10px;
-  font-size: 1.6rem;
-  color: #555;
-}
 
-.post-actions i {
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.post-actions .fa-heart:hover {
-  color: #e74c3c; /* Red for heart, or change as needed */
-}
-.post-actions .fa-comment:hover {
-  color:rgb(44, 179, 100); /* Red for heart, or change as needed */
-}
-
-  </style>
-</head>
+</style>
 <body>
-  
-<?= view('partials/header') ?>
-
-
-<br><h1 style="color:white; font-family:myFirstFont; font-size:90px;">Blogs</h1><br>
-
+<?= view('partials/header') ?><br>
+<h1 style="color:white; font-family:myFirstFont; font-size:90px;">My Posts</h1>
+<br>
 <?php if (session()->get('api_key')): ?>
 <div class="blog-container">
   <?php if (!empty($posts)): ?>
@@ -196,8 +157,7 @@ h2, h5 {
 
     <!-- Featured Post -->
     <div class="featured-post mb-4">
-   
-    <span class="badge">Newest</span>
+    <span class="badge">Newest</span> 
       <?php if (!empty($posts[0]['media'])): ?>
         <?php if (preg_match('/\.(jpg|jpeg|png|gif|jfif)$/i', $posts[0]['media'])): ?>
           <img src="/<?= esc($posts[0]['media']) ?>" alt="Featured Image" class="featured-img">
@@ -215,16 +175,11 @@ h2, h5 {
         <p><?= esc($posts[0]['content']) ?></p>
         <div class="author">
           <img src="/uploads/sss.jfif" alt="Author Image">
-          <span><?= esc($posts[0]['username'] ?? 'Author') ?></span>
+          <span><?= esc($posts[0]['username'] ?? '') ?></span>
         </div>
-        
-      
-    </div>
-    <div class="post-actions">
-    <i class="fa-regular fa-heart"></i>
-    <i class="fa-regular fa-comment"></i>
-  </div>
       </div>
+    </div>
+
     <!-- All Other Posts -->
     <div class="sub-posts-grid">
       <?php foreach (array_slice($posts, 1) as $post): ?>
@@ -245,12 +200,8 @@ h2, h5 {
           <p><?= esc($post['content']) ?></p>
           <div class="author">
             <img src="/uploads/sss.jfif" alt="Author Image">
-            <span><?= esc($post['username'] ?? 'Author') ?></span>
+            <span><?= esc($post['username'] ?? '') ?></span>
           </div>
-          <div class="post-actions">
-    <i class="fa-regular fa-heart"></i>
-    <i class="fa-regular fa-comment"></i>
-  </div>
         </div>
       <?php endforeach; ?>
     </div>
@@ -266,11 +217,6 @@ h2, h5 {
   </div>
 <?php endif; ?>
 
-
-<br><br><br>
-
+<br><br><br><br>
 </body>
-<script>
-  
-</script>
 </html>

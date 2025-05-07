@@ -5,7 +5,10 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Blog::list');
+
+$routes->get('/', 'Blog::home');
+$routes->get('/blog/about', 'Blog::about');
+$routes->get('/blog/myposts', 'Blog::myposts');
 $routes->get('/blog', 'Blog::index');
 $routes->post('/blog/save', 'Blog::save');
 $routes->get('/blog/list', 'Blog::list');
@@ -18,4 +21,4 @@ $routes->get('/logout', 'Auth::logout');
 $routes->get('api/get-data', 'ApiController::getData');
 $routes->post('/api/store-data', 'ApiController::storeData');
 $routes->post('/auth/markFirstLoginDone', 'Auth::markFirstLoginDone');
-
+$routes->get('/blog/search', 'Blog::search');
