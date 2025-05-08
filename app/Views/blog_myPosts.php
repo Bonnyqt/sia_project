@@ -141,6 +141,7 @@ h2, h5 {
 
 </style>
 <body>
+  
 <?= view('partials/header') ?><br>
 <h1 style="color:white; font-family:myFirstFont; font-size:90px;">My Posts</h1>
 <br>
@@ -207,7 +208,7 @@ h2, h5 {
     </div>
 
   <?php else: ?>
-    <p>No posts yet.</p>
+   <center> <p>You have not submitted any stories yet.</p></center>
   <?php endif; ?>
 </div>
 <?php else: ?>

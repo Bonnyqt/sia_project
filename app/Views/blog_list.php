@@ -256,7 +256,7 @@ h2, h5 {
     </div>
 
   <?php else: ?>
-    <p>No posts yet.</p>
+   <center> <p>No posts yet.</p></center>
   <?php endif; ?>
 </div>
 <?php else: ?>

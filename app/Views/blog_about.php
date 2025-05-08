@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/uploads/test.png">
   <title>LV | About Us</title>
   <style>
 body {
@@ -105,6 +106,7 @@ body {
   </style>
 </head>
 <body>
+  
 <?= view('partials/header') ?>
 <br>
 <h1 style="color:white; font-family:myFirstFont; font-size:90px;">About Us</h1>

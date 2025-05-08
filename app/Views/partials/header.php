@@ -146,7 +146,7 @@ nav a.active {
   bottom: 20px;
   right: 20px;
   padding: 15px 30px;
-  background-color:rgb(45, 31, 122);
+  background-color:#13547a;
   color: white;
   font-size: 16px;
   border: none;
@@ -235,12 +235,35 @@ nav a.active {
   cursor: pointer;
 }
 
-/* Container for the form and other content */
-.container {
-  max-width: 600px;
-  margin: 0 auto;
+.close-btn2 {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
+.close-btn2:hover,
+.close-btn2:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.close-btn3 {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn3:hover,
+.close-btn3:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 h1 {
   font-size: 1.8em;
   text-align: center;
@@ -312,7 +335,162 @@ button[type="submit"]:hover {
         outline: none;
         background-color: #fff;
     }
+
+    #loginPopup.modal, #signupPopup.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    display: flex; /* Make sure the flex display is enabled */
+  }
+
+  /* Modal content */
+  #loginPopup .modal-content, #signupPopup .modal-content {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    width: 320px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  }
+
+  /* Close button */
+  #loginPopup .close-btn, #signupPopup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #888;
+  }
+
+  /* Title */
+  #loginPopup h2, #signupPopup h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+  }
+
+  /* Label styles */
+  #loginPopup label, #signupPopup label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #444;
+  }
+
+  /* Input fields */
+  #loginPopup input[type="text"],
+  #loginPopup input[type="password"],
+  #signupPopup input[type="text"],
+  #signupPopup input[type="email"],
+  #signupPopup input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  /* Submit button */
+  #loginPopup button[type="submit"], 
+  #signupPopup button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #loginPopup button[type="submit"]:hover, 
+  #signupPopup button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+
+  /* Link styles */
+  #loginPopup a, #signupPopup a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  #loginPopup a:hover, #signupPopup a:hover {
+    text-decoration: underline;
+  }
+
+  /* Error message styles */
+  .error-message {
+    background-color: #f8d7da;
+    padding: 10px;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+  
 </style>
+<div id="loginPopup" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background-image: linear-gradient(to bottom, #364050, #192130); padding:30px; border-radius:10px; width:600px; font-family:Arial; position:relative;">
+    <span class="close-btn2" onclick="document.getElementById('loginPopup').style.display='none'">&times;</span>
+    <center><img src="/uploads/test.png" alt="" style="height:26px;width:26px;"></center>
+    <h2 style="font-family:myFirstFont; color:white; font-size:50px;">Login</h2>
+    <?php if (session()->getFlashdata('error')): ?>
+        <p class="error-message"><?= session()->getFlashdata('error') ?></p>
+    <?php endif; ?>
+    <form method="post" action="/login">
+        <label for="username"style="font-family:myFirstFont; color:white; font-size:20px;">Username:</label>
+        <input type="text" name="username" required>
+
+        <label for="password"style="font-family:myFirstFont; color:white; font-size:20px;">Password:</label>
+        <input type="password" name="password" required>
+
+        <button type="submit" style="background-color:#13547a;">Login</button>
+    </form>
+    <a href="#" onclick="switchToSignup()" style="font-family:myFirstFont; color:white; font-size:20px;">No account? Signup</a>
+  </div>
+</div>
+
+<div id="signupPopup" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background-image: linear-gradient(to bottom, #364050, #192130); padding:30px; border-radius:10px; width:600px; font-family:Arial; position:relative;">
+    <span class="close-btn" onclick="document.getElementById('signupPopup').style.display='none'">&times;</span>
+    <center><img src="/uploads/test.png" alt="" style="height:26px;width:26px;"></center>
+    <h2 style="font-family:myFirstFont; color:white; font-size:50px;">Signup</h2>
+    <?php if (session()->getFlashdata('error')): ?>
+        <p class="error-message"><?= session()->getFlashdata('error') ?></p>
+    <?php endif; ?>
+    <form method="post" action="/register">
+        <label for="username" style="font-family:myFirstFont; color:white; font-size:20px;">Username:</label>
+        <input type="text" name="username" required>
+
+        <label for="email"style="font-family:myFirstFont; color:white; font-size:20px;">Email:</label>
+        <input type="email" name="email" required>
+
+        <label for="password" style="font-family:myFirstFont; color:white; font-size:20px;">Password:</label>
+        <input type="password" name="password" required>
+
+        <button type="submit" style="background-color:#13547a;">Register</button>
+    </form>
+
+    <a href="#" onclick="switchToLogin()"style="font-family:myFirstFont; color:white; font-size:20px;">Already have an account? Login</a>
+  </div>
+</div>
 
 
 <header class="d-flex justify-content-between align-items-center mb-4">
@@ -338,7 +516,7 @@ button[type="submit"]:hover {
 </form><?php endif; ?>
   <style>
       .search-input::placeholder {
-        color: white;
+        color: grey;
         opacity: 1;
         font-family: myFirstFont;
         font-size:20px;
@@ -346,7 +524,29 @@ button[type="submit"]:hover {
     </style>
 
     <?php if (!session()->get('user_id')): ?>
-        <a href="/login" style="font-family: myFirstFont; font-size:20px; color:white; text-decoration: none; margin-right:10px;">Login</a>
+<!-- Login Link -->
+<a href="#" onclick="openLoginPopup()" style="font-family: myFirstFont; font-size:20px; color:white; text-decoration: none; margin-right:10px;">Login</a>
+
+<!-- Login Popup -->
+
+
+<!-- JavaScript -->
+<script>
+  function openLoginPopup() {
+    document.getElementById('loginPopup').style.display = 'flex';
+  }
+
+  function closeLoginPopup() {
+    document.getElementById('loginPopup').style.display = 'none';
+  }
+
+  function submitLogin() {
+    // Handle login logic here
+    alert("Logging in...");
+    closeLoginPopup();
+  }
+</script>
+
     <?php else: ?>
         <span class="text-white small" style="font-family: myFirstFont; font-size:20px;">Hello, <?= esc(session()->get('username')) ?></span>
         <a href="/logout"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#eb6363" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
@@ -360,13 +560,27 @@ button[type="submit"]:hover {
 </header>
 
 
+
+<script>
+  function switchToSignup() {
+    document.getElementById('loginPopup').style.display = 'none';
+    document.getElementById('signupPopup').style.display = 'flex';
+  }
+
+  function switchToLogin() {
+    document.getElementById('signupPopup').style.display = 'none';
+    document.getElementById('loginPopup').style.display = 'flex';
+  }
+</script>
+
 <button id="stickyBtn" class="btn"><i class="fas fa-plus"></i> Share your story</button>
 
-<div id="myModal" class="modal">
-<div class="modal-content">
-  <span class="close-btn">&times;</span>
+<div id="myModal" class="modal" >
+<div class="modal-content"  style="background-image: linear-gradient(to bottom, #364050, #192130);">
+<span class="close-btn3" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
   <div class="container">
-      <h1>Create a New Blog Post</h1>
+  <center><img src="/uploads/test.png" alt="" style="height:26px;width:26px;"></center>
+  <center> <h2 style="font-family:myFirstFont; color:white; font-size:50px;">Create a new story</h2></center>
 
       <!-- Show any error messages -->
       <?php if (session()->getFlashdata('error')): ?>
@@ -375,17 +589,17 @@ button[type="submit"]:hover {
 
       <!-- Blog Post Form -->
       <form method="post" action="/blog/save" enctype="multipart/form-data">
-    <label for="title">Title</label>
+    <label for="title"style="font-family:myFirstFont; color:white; font-size:20px;">Title</label>
     <input type="text" name="title" id="title" required>
 
-    <label for="content">Content</label>
+    <label for="content"style="font-family:myFirstFont; color:white; font-size:20px;">Content</label>
     <textarea name="content" id="content" rows="6" required></textarea>
 
-    <label for="media">Upload Image or Video</label>
+    <label for="media"style="font-family:myFirstFont; color:white; font-size:20px;">Upload Image or Video</label>
     <input type="file" name="media" id="media" accept="image/*,video/*,.gif,.avif,.jfif" required>
 
     <div class="form-group">
-    <label for="category">Category</label>
+    <label for="category"style="font-family:myFirstFont; color:white; font-size:20px;">Category</label>
     <select name="category" id="category" required>
         <option value="">-- Select Category --</option>
         <option value="General">General</option>
@@ -398,12 +612,12 @@ button[type="submit"]:hover {
     </select>
 </div>
 
-    <label for="isAnonymous">
+    <label for="isAnonymous"style="font-family:myFirstFont; color:white; font-size:20px;">
         <input type="checkbox" name="isAnonymous" id="isAnonymous" value="true">
-        Post as Anonymous
+        &nbsp; Post as Anonymous
     </label>
 
-    <button type="submit">Save Post</button>
+    <button type="submit"style="background-color:#13547a;">Save Post</button>
 </form>
 
   </div>
@@ -535,7 +749,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Get the modal and button elements
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("stickyBtn"); // Assuming you have a sticky button to open the modal
-var closeBtn = document.getElementsByClassName("close-btn")[0];
+
 
 // Open the modal when the button is clicked
 btn.onclick = function() {
