@@ -220,10 +220,7 @@ h2, h5 {
         
       
     </div>
-    <div class="post-actions">
-    <i class="fa-regular fa-heart"></i>
-    <i class="fa-regular fa-comment"></i>
-  </div>
+    
       </div>
     <!-- All Other Posts -->
     <div class="sub-posts-grid">
@@ -247,10 +244,7 @@ h2, h5 {
             <img src="/uploads/sss.jfif" alt="Author Image">
             <span><?= esc($post['username'] ?? 'Author') ?></span>
           </div>
-          <div class="post-actions">
-    <i class="fa-regular fa-heart"></i>
-    <i class="fa-regular fa-comment"></i>
-  </div>
+         
         </div>
       <?php endforeach; ?>
     </div>
@@ -271,6 +265,44 @@ h2, h5 {
 
 </body>
 <script>
-  
+    function likePost(postId) {
+        fetch(`/blog/like/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`like-count-${postId}`).textContent = data.likes;
+            } else {
+                alert(data.error || 'Failed to like the post.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function openCommentModal(postId) {
+        const comment = prompt('Enter your comment:');
+        if (comment) {
+            fetch(`/blog/comment/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ comment }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Comment added successfully!');
+                } else {
+                    alert(data.error || 'Failed to add comment.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
 </script>
 </html>

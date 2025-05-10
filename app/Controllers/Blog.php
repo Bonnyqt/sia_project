@@ -191,6 +191,153 @@ private function checkApiKey($apiKey)
     return view('blog_list', ['posts' => $data['posts'], 'query' => $query]);
 }
 
+
+// Function to edit a blog post
+public function update($id)
+{
+    $model = new BlogModel();
+
+    // Fetch the post by ID
+    $post = $model->find($id);
+
+    if (!$post) {
+        return redirect()->to('/blog/myposts')->with('error', 'Post not found.');
+    }
+
+    // Check if the logged-in user is the owner of the post
+    if ($post['user_id'] != session()->get('user_id')) {
+        return redirect()->to('/blog/myposts')->with('error', 'Unauthorized access.');
+    }
+
+    $title = $this->request->getPost('title');
+    $content = $this->request->getPost('content');
+    $category = $this->request->getPost('category');
+    $isAnonymous = $this->request->getPost('isAnonymous') ? 1 : 0;
+
+    if (!$title || !$content) {
+        return redirect()->back()->with('error', 'Title and Content are required.');
+    }
+
+    // Handle media upload
+    $media = $this->request->getFile('media');
+    if ($media && $media->isValid() && !$media->hasMoved()) {
+        $mediaName = $media->getRandomName();
+        if ($media->move(ROOTPATH . 'public/uploads', $mediaName)) {
+            $post['media'] = 'uploads/' . $mediaName; // Update the media path with the new file
+        } else {
+            log_message('error', 'Failed to move uploaded file.');
+            return redirect()->back()->with('error', 'Failed to upload the image.');
+        }
+    }
+    // If no new media is uploaded, retain the existing media
+    else {
+        $post['media'] = $post['media']; // Retain the existing media
+    }
+
+    // Update the post data
+    $post['title'] = $title;
+    $post['content'] = $content;
+    $post['category'] = $category;
+    $post['isAnonymous'] = $isAnonymous;
+
+    // Update the username if anonymous is checked
+    if ($isAnonymous) {
+        $post['username'] = 'Anonymous';
+    } else {
+        $userModel = new UserModel();
+        $user = $userModel->find(session()->get('user_id'));
+        $post['username'] = $user ? $user['username'] : 'Unknown';
+    }
+
+    if (!$model->save($post)) {
+        return redirect()->back()->with('error', 'Failed to update the post.');
+    }
+
+    return redirect()->to('/blog/myposts')->with('success', 'Post updated successfully.');
+}
+public function getPost($id)
+{
+    $postModel = new \App\Models\BlogModel();
+    $post = $postModel->find($id);
+
+    if ($post) {
+        return $this->response->setJSON($post);
+    } else {
+        return $this->response->setStatusCode(404)->setJSON(['error' => 'Post not found']);
+    }
+}
+// Function to delete a blog post
+public function delete($id)
+{
+    $model = new BlogModel();
+
+    // Fetch the post by ID
+    $post = $model->find($id);
+
+    if (!$post) {
+        return redirect()->to('/blog/myposts')->with('error', 'Post not found.');
+    }
+
+    // Check if the logged-in user is the owner of the post
+    if ($post['user_id'] != session()->get('user_id')) {
+        return redirect()->to('/blog/myposts')->with('error', 'Unauthorized access.');
+    }
+
+    // Delete the post
+    if (!$model->delete($id)) {
+        return redirect()->to('/blog/myposts')->with('error', 'Failed to delete the post.');
+    }
+
+    return redirect()->to('/blog/myposts')->with('success', 'Post deleted successfully.');
+}
+
+
+public function like($id)
+{
+    $model = new BlogModel();
+    $post = $model->find($id);
+
+    if (!$post) {
+        return $this->response->setJSON(['error' => 'Post not found'], 404);
+    }
+
+    // Increment the like count
+    $post['likes'] = isset($post['likes']) ? $post['likes'] + 1 : 1;
+
+    if ($model->save($post)) {
+        return $this->response->setJSON(['success' => true, 'likes' => $post['likes']]);
+    }
+
+    return $this->response->setJSON(['error' => 'Failed to like the post'], 500);
+}
+
+public function comment($id)
+{
+    $comment = $this->request->getPost('comment');
+    if (!$comment) {
+        return $this->response->setJSON(['error' => 'Comment cannot be empty'], 400);
+    }
+
+    $model = new BlogModel();
+    $post = $model->find($id);
+
+    if (!$post) {
+        return $this->response->setJSON(['error' => 'Post not found'], 404);
+    }
+
+    // Add the comment to the post
+    $post['comments'][] = [
+        'user_id' => session()->get('user_id'),
+        'comment' => $comment,
+        'created_at' => date('Y-m-d H:i:s'),
+    ];
+
+    if ($model->save($post)) {
+        return $this->response->setJSON(['success' => true, 'comments' => $post['comments']]);
+    }
+
+    return $this->response->setJSON(['error' => 'Failed to add comment'], 500);
+}
 }    
 
 

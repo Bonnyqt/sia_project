@@ -22,3 +22,8 @@ $routes->get('api/get-data', 'ApiController::getData');
 $routes->post('/api/store-data', 'ApiController::storeData');
 $routes->post('/auth/markFirstLoginDone', 'Auth::markFirstLoginDone');
 $routes->get('/blog/search', 'Blog::search');
+$routes->post('/blog/update/(:num)', 'Blog::update/$1');
+$routes->get('/blog/delete/(:num)', 'Blog::delete/$1');
+$routes->get('/blog/getPost/(:num)', 'Blog::getPost/$1');
+$routes->post('/blog/like/(:num)', 'Blog::like/$1');
+$routes->post('/blog/comment/(:num)', 'Blog::comment/$1');

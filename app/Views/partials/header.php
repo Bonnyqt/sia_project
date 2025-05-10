@@ -575,55 +575,56 @@ button[type="submit"]:hover {
 
 <button id="stickyBtn" class="btn"><i class="fas fa-plus"></i> Share your story</button>
 
-<div id="myModal" class="modal" >
-<div class="modal-content"  style="background-image: linear-gradient(to bottom, #364050, #192130);">
-<span class="close-btn3" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
-  <div class="container">
-  <center><img src="/uploads/test.png" alt="" style="height:26px;width:26px;"></center>
-  <center> <h2 style="font-family:myFirstFont; color:white; font-size:50px;">Create a new story</h2></center>
+<!-- filepath: c:\xampp\htdocs\sia_project\app\Views\partials\header.php -->
+<div id="myModal" class="modal">
+    <div class="modal-content" style="background-image: linear-gradient(to bottom, #364050, #192130);">
+        <span class="close-btn3" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+        <div class="container">
+            <center><img src="/uploads/test.png" alt="" style="height:26px;width:26px;"></center>
+            <center><h2 id="modalTitle" style="font-family:myFirstFont; color:white; font-size:50px;">Create a new story</h2></center>
 
-      <!-- Show any error messages -->
-      <?php if (session()->getFlashdata('error')): ?>
-          <div class="message"><?= session()->getFlashdata('error') ?></div>
-      <?php endif; ?>
+            <!-- Show any error messages -->
+            <?php if (session()->getFlashdata('error')): ?>
+                <div class="message"><?= session()->getFlashdata('error') ?></div>
+            <?php endif; ?>
 
-      <!-- Blog Post Form -->
-      <form method="post" action="/blog/save" enctype="multipart/form-data">
-    <label for="title"style="font-family:myFirstFont; color:white; font-size:20px;">Title</label>
-    <input type="text" name="title" id="title" required>
+            <!-- Blog Post Form -->
+            <form id="postForm" method="post" action="/blog/save" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="postId"> <!-- Hidden field for post ID -->
 
-    <label for="content"style="font-family:myFirstFont; color:white; font-size:20px;">Content</label>
-    <textarea name="content" id="content" rows="6" required></textarea>
+                <label for="title" style="font-family:myFirstFont; color:white; font-size:20px;">Title</label>
+                <input type="text" name="title" id="title" required>
 
-    <label for="media"style="font-family:myFirstFont; color:white; font-size:20px;">Upload Image or Video</label>
-    <input type="file" name="media" id="media" accept="image/*,video/*,.gif,.avif,.jfif" required>
+                <label for="content" style="font-family:myFirstFont; color:white; font-size:20px;">Content</label>
+                <textarea name="content" id="content" rows="6" required></textarea>
 
-    <div class="form-group">
-    <label for="category"style="font-family:myFirstFont; color:white; font-size:20px;">Category</label>
-    <select name="category" id="category" required>
-        <option value="">-- Select Category --</option>
-        <option value="General">General</option>
-        <option value="Technology">Technology</option>
-        <option value="Education">Education</option>
-        <option value="Lifestyle">Lifestyle</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Health">Health</option>
-        <option value="Travel">Travel</option>
-    </select>
+                <label for="media" style="font-family:myFirstFont; color:white; font-size:20px;">Upload Image or Video</label>
+                <input type="file" name="media" id="media" accept="image/*,video/*,.gif,.avif,.jfif">
+
+                <div class="form-group">
+                    <label for="category" style="font-family:myFirstFont; color:white; font-size:20px;">Category</label>
+                    <select name="category" id="category" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="General">General</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Education">Education</option>
+                        <option value="Lifestyle">Lifestyle</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Health">Health</option>
+                        <option value="Travel">Travel</option>
+                    </select>
+                </div>
+
+                <label for="isAnonymous" style="font-family:myFirstFont; color:white; font-size:20px;">
+                    <input type="checkbox" name="isAnonymous" id="isAnonymous" value="true">
+                    &nbsp; Post as Anonymous
+                </label>
+
+                <button type="submit" id="modalSubmitButton" style="background-color:#13547a;">Save Post</button>
+            </form>
+        </div>
+    </div>
 </div>
-
-    <label for="isAnonymous"style="font-family:myFirstFont; color:white; font-size:20px;">
-        <input type="checkbox" name="isAnonymous" id="isAnonymous" value="true">
-        &nbsp; Post as Anonymous
-    </label>
-
-    <button type="submit"style="background-color:#13547a;">Save Post</button>
-</form>
-
-  </div>
-</div>
-</div>
-
 
 
 <?php if (session()->get('first_login')): ?>
